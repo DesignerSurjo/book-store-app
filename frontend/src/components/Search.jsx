@@ -31,13 +31,13 @@ const Search = () => {
         <img 
             src={assets.search_icon} 
             alt="Search" 
-            className='w-5 cursor-pointer opacity-70 mr-2.5 ' 
+            className='w-5 cursor-pointer opacity-70 mr-5 ' 
         />
         <img 
             onClick={() => setShowSearch(false)} 
             src={assets.cross_icon} 
             alt="Close" 
-            className='w-4 cursor-pointer opacity-70' 
+            className='w-5 cursor-pointer opacity-70' 
         />
     </div>
 </div>
