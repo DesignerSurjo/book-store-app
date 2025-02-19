@@ -51,7 +51,7 @@ export const Product = () => {
 
 
             <div className=' text-[17px] mt-3 '>
-              <p className='text-gray-400 text-base '>by <span className='text-[#C31C37] font-medium'>{productData.subCategory}</span></p>
+              <p className='text-gray-400 text-base '>by <span className='text-[#C31C37] font-medium'>{productData.author}</span></p>
             </div>
             <div className=' text-[17px] mt-3 '>
               <p className='text-gray-400 text-base '>Category: <span className='text-[#C31C37] font-medium'>{productData.category}</span></p>
