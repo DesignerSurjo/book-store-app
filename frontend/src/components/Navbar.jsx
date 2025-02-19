@@ -58,7 +58,7 @@ const Navbar = () => {
         >
           <img
             onClick={() => isMobile && (token ? setDropdownOpen(!dropdownOpen) : navigate('/login'))}
-            className="w-6 cursor-pointer"
+            className="w-5 cursor-pointer"
             src={assets.profile_icon}
             alt="Profile"
           />
@@ -89,7 +89,7 @@ const Navbar = () => {
 
         {/* Cart Icon */}
         <Link to="/cart" className="relative">
-          <img src={assets.cart_icon} alt="Cart" className="w-6" />
+          <img src={assets.cart_icon} alt="Cart" className="w-5" />
           <p className="absolute -right-2 -bottom-2 w-5 h-5 flex items-center justify-center bg-[#C31C37] text-white rounded-full text-xs">
             {getCartCount()}
           </p>
@@ -100,15 +100,14 @@ const Navbar = () => {
           onClick={() => setVisible(true)}
           src={assets.menu_icon}
           alt="Menu"
-          className="w-6 cursor-pointer sm:hidden"
+          className="w-5 cursor-pointer sm:hidden"
         />
       </div>
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 ${
-          visible ? 'w-64' : 'w-0 overflow-hidden'
-        } z-50`}
+        className={`fixed top-0 right-0 h-full bg-white shadow-lg transition-all duration-300 ${visible ? 'w-64' : 'w-0 overflow-hidden'
+          } z-50`}
       >
         <div className="flex flex-col text-gray-700">
           <div onClick={() => setVisible(false)} className="flex items-center p-4 cursor-pointer">
