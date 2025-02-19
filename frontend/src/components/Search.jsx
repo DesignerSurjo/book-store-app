@@ -20,7 +20,7 @@ const Search = () => {
    
   return showSearch && visible ? (
     <div className='bg-gray-50 text-center py-4'>
-    <div className='flex items-center px-4 py-2 my-5 mx-auto rounded-full w-full max-w-lg bg-white'>
+    <div className='flex items-center px-4 py-2 my-5 mx-auto rounded-full max-w-lg bg-gray-50'>
         <input 
             value={search} 
             onChange={(e) => setSearch(e.target.value)} 
@@ -31,7 +31,7 @@ const Search = () => {
         <img 
             src={assets.search_icon} 
             alt="Search" 
-            className='w-5 cursor-pointer opacity-70 ml-1 ' 
+            className='w-5 cursor-pointer opacity-70 mr-3 ' 
         />
         <img 
             onClick={() => setShowSearch(false)} 
