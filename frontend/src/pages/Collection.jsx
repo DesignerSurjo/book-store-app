@@ -1,39 +1,35 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { ShopContext } from '../context/ShopContext'
-import { assets } from '../assets/assets'
+import React, { useContext, useState, useEffect } from 'react';
+import { ShopContext } from '../context/ShopContext';
+import { assets } from '../assets/assets';
 import ProductItem from '../components/ProductItem';
 import Title from '../components/Title';
 
 const Collection = () => {
-  const { products, search, showSearch } = useContext(ShopContext)
+  const { products, search, showSearch } = useContext(ShopContext);
   const [showFilter, setShowFilter] = useState(false);
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
 
+  // Handle category toggling
   const toggleCategory = (e) => {
     const value = e.target.value;
     setCategory(prev =>
       prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
     );
-  }
+  };
 
+  // Handle sub-category (author) toggling
   const toggleSubCategory = (e) => {
     const value = e.target.value;
     setSubCategory(prev =>
       prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
     );
-  }
+  };
 
+  // Apply filters
   const applyFilter = () => {
     let productsCopy = products.slice();
-
-    // Search filter
-    if (showSearch && search) {
-      productsCopy = productsCopy.filter(item =>
-        item.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
 
     // Category filter
     if (category.length > 0) {
@@ -45,7 +41,14 @@ const Collection = () => {
     // SubCategory (Author) filter
     if (subCategory.length > 0) {
       productsCopy = productsCopy.filter(item =>
-        subCategory.some(sub => item.subCategory && item.subCategory.includes(sub))
+        subCategory.includes(item.author)  // Updated to use 'author' directly
+      );
+    }
+
+    // Search filter
+    if (showSearch && search) {
+      productsCopy = productsCopy.filter(item =>
+        item.name.toLowerCase().includes(search.toLowerCase())
       );
     }
 
@@ -61,7 +64,8 @@ const Collection = () => {
 
       {/* Filter option */}
       <div className='min-w-60'>
-        <p onClick={() => setShowFilter(!showFilter)} className='my-2 text-xl flex items-center cursor-pointer gap-2 uppercase'>Filters
+        <p onClick={() => setShowFilter(!showFilter)} className='my-2 text-xl flex items-center cursor-pointer gap-2 uppercase'>
+          Filters
           <img
             src={assets.dropdown_icon}
             alt=""
@@ -104,9 +108,7 @@ const Collection = () => {
         </div>
 
         {/* SubCategory filter */}
-        <div
-          className={`border border-gray-300 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}
-        >
+        <div className={`border border-gray-300 pl-5 py-3 my-5 ${showFilter ? '' : 'hidden'} sm:block`}>
           <p className="mb-3 text-sm font-medium uppercase">Authors</p>
           <div className="flex flex-col gap-2 text-sm font-light text-gray-700">
             <p className="flex gap-2">
@@ -173,21 +175,26 @@ const Collection = () => {
           <Title text1={'ALL'} text2={'COLLECTION'} />
         </div>
 
+        {/* Product grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-5 gap-y-6">
-          {filterProducts.map((item, index) => (
-            <ProductItem
-              key={index}
-              id={item._id}
-              image={item.image}
-              name={item.name}
-              price={item.price}
-              oldPrice={item.oldPrice}
-            />
-          ))}
+          {filterProducts.length > 0 ? (
+            filterProducts.map((item, index) => (
+              <ProductItem
+                key={index}
+                id={item._id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                oldPrice={item.oldPrice}
+              />
+            ))
+          ) : (
+            <p>No products found</p>
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Collection;

@@ -123,11 +123,11 @@ const Add = ({ token }) => {
 
       <div>
         <p className='mb-2'>Price</p>
-        <input onChange={(e) => setPrice(e.target.value)} value={price} type="Number" placeholder='$' required />
+        <input className='md:w-full w-50' onChange={(e) => setPrice(e.target.value)} value={price} type="Number" placeholder='$' required />
       </div>
       <div>
         <p className='mb-2'>Old Price</p>
-        <input onChange={(e) => setOldPrice(e.target.value)} value={oldPrice} type="Number" placeholder='$' required />
+        <input className='md:w-full w-50' onChange={(e) => setOldPrice(e.target.value)} value={oldPrice} type="Number" placeholder='$' required />
       </div>
 
       {/* <div>
