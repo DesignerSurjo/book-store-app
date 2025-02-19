@@ -31,7 +31,7 @@ const Search = () => {
         <img 
             src={assets.search_icon} 
             alt="Search" 
-            className='w-5 cursor-pointer opacity-70 mr-3 ' 
+            className='w-5 cursor-pointer opacity-70 mr-2.5 ' 
         />
         <img 
             onClick={() => setShowSearch(false)} 
