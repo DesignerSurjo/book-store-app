@@ -26,7 +26,7 @@ const Login = ({ setToken }) => {
     return (
         <div className='min-h-screen flex items-center justify-center w-full'>
             <div className='bg-white shadow-md rounded-lg px-8 py-6 max-w-md'>
-                <h1 className="text-[#C31C37] text-2xl font-bold mb-4">Admin Panel</h1>
+                <h1 className="text-[#721587] text-2xl font-bold mb-4">Admin Panel</h1>
 
                 <form onSubmit={onSubmitHandler}>
 
@@ -41,7 +41,7 @@ const Login = ({ setToken }) => {
 
 
                     </div>
-                    <button type='submit' className=' bg-[#C31C37] w-full rounded-md text-white px-8 py-2 font-light mt-4 cursor-pointer'>Login</button>
+                    <button type='submit' className=' bg-[#721587] w-full rounded-md text-white px-8 py-2 font-light mt-4 cursor-pointer'>Login</button>
                 </form>
             </div>
         </div>

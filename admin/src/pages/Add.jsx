@@ -160,7 +160,7 @@ const Add = ({ token }) => {
         <input onChange={() => setBestseller(prev => !prev)} checked={bestseller} type="checkbox" id="bestseller" />
         <label className='cursor-pointer' htmlFor="bestseller">Add to bestseller</label>
       </div>
-      <button type='submit' className='w-28 py-3 mt-4 bg-[#18032a] cursor-pointer text-white rounded-md'>Add</button>
+      <button type='submit' className='w-28 py-3 mt-4 bg-[#721587] cursor-pointer text-white rounded-md'>Add</button>
     </form>
   )
 }

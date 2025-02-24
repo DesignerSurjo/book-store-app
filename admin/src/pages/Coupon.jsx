@@ -112,7 +112,7 @@ const AddCoupon = ({ token }) => {
 
             <button 
                 onClick={handleCreateCoupon} 
-                className="bg-black cursor-pointer text-white p-2 rounded w-full transition"
+                className="bg-[#721587] cursor-pointer text-white p-2 rounded w-full transition"
             >
                 Create Coupon
             </button>
