@@ -5,15 +5,18 @@ import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { data } from 'react-router-dom';
+import CouponApply from '../components/CouponApply';
 const PlaceOrder = () => {
     const [method, setMethod] = useState('cod')
+    const [discount, setDiscount] = useState(0)
     const { navigate, products,
         delivery_fee,
         cartItems,
         setCartItems,
         getCartAmount,
         backendUrl,
-        token, } = useContext(ShopContext);
+        token, currency } = useContext(ShopContext);
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -28,40 +31,45 @@ const PlaceOrder = () => {
     })
 
     const onChangeHandler = (event) => {
-        const name = event.target.name
-        const value = event.target.value
+        const { name, value } = event.target
 
-        setFormData(data => ({ ...data, [name]: value }))
+        setFormData((data) => ({ ...data, [name]: value }));
     }
 
     const onSubmitHandler = async (event) => {
         event.preventDefault();
         try {
             let orderItems = [];
-    
+
             // cartItems অবজেক্টের উপর একক লুপ
             for (const itemId in cartItems) {
                 if (cartItems[itemId] > 0) {
                     // products থেকে সঠিক আইটেম খুঁজে বের করা
                     const itemInfo = structuredClone(products.find(product => product._id === itemId));
-                    
+
                     if (itemInfo) {
                         itemInfo.quantity = cartItems[itemId];  // কুইন্টিটি অ্যাসাইন করা
                         orderItems.push(itemInfo);
                     }
                 }
             }
-    
+
+            let subTotal = getCartAmount();
+            let finalTotal = Math.max(subTotal + delivery_fee - discount, 1)
+
             let orderData = {
                 address: formData,
                 items: orderItems,
-                amount: getCartAmount() + delivery_fee
+                subTotal: subTotal,
+                delivery_fee: delivery_fee,
+                discount: discount,
+                amount: finalTotal
             };
-    
+
             switch (method) {
                 case 'cod':
                     const response = await axios.post(backendUrl + '/api/order/place', orderData, { headers: { token } });
-    
+
                     if (response.data.success) {
                         setCartItems({});
                         navigate('/order');
@@ -69,8 +77,8 @@ const PlaceOrder = () => {
                         toast.error(response.data.message);
                     }
                     break;
-    
-               
+
+
                 case 'stripe':
                     const responseStripe = await axios.post(backendUrl + '/api/order/stripe', orderData, { headers: { token } });
                     if (responseStripe.data.success) {
@@ -80,17 +88,17 @@ const PlaceOrder = () => {
                         toast.error(responseStripe.data.message);
                     }
                     break;
-    
+
                 default:
                     break;
             }
-    
+
         } catch (error) {
             console.log(error);
             toast.error(error.message);
         }
     };
-    
+
     return (
         <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t border-gray-200'>
             <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
@@ -135,6 +143,16 @@ const PlaceOrder = () => {
             <div className='mt-8'>
                 <div className='mt-8 min-w-80'>
                     <CartTotal></CartTotal>
+                    <CouponApply setDiscount={setDiscount} cartTotal={getCartAmount()}></CouponApply>
+
+                    <div className='flex justify-between font-semibold mt-4'>
+                        <p>Discount</p>
+                        <p>-{discount > 0 ? `৳${discount.toFixed(2)}` : `৳0.00`}</p>
+                    </div>
+                    <div className="flex justify-between font-bold mt-2 text-lg">
+                        <p>Final Total</p>
+                        <p>{currency}{Math.max(getCartAmount() + delivery_fee - discount, 1).toFixed(2)}</p> {/* ✅ Fix applied */}
+                    </div>
                 </div>
                 <div className='mt-12'>
                     <Title text1={'PAYMENT'} text2={'METHOD'}></Title>

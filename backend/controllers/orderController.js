@@ -38,8 +38,14 @@ const placeOrder = async (req, res) => {
 
 const placeOrderStripe = async (req, res) => {
     try {
-        const { userId, items, amount, address } = req.body;
+        const { userId, items, amount, address, discount } = req.body;
         const { origin } = req.headers;
+
+        // Ensure the values are at least 1
+        const minAmount = Math.max(amount, 1); // Ensure total amount is at least 1
+        const minDiscount = Math.max(discount, 0); // Ensure discount is non-negative
+        const minDeliverCharge = Math.max(deliverCharge, 1); // Ensure delivery charge is at least 1
+
 
         const orderData = {
             userId,
@@ -61,7 +67,7 @@ const placeOrderStripe = async (req, res) => {
                 product_data: {
                     name: item.name
                 },
-                unit_amount: item.price * 100
+                unit_amount: Math.max(Math.round(item.price * 100, 1)) // Ensure price is at least 1 cent
             },
             quantity: item.quantity
         }))
@@ -71,16 +77,25 @@ const placeOrderStripe = async (req, res) => {
                 product_data: {
                     name: 'Delivery Charge'
                 },
-                unit_amount: deliverCharge * 100
+                unit_amount: Math.max(minDeliverCharge * 100, 1) // Ensure delivery charge is at least 1 cent
             },
             quantity: 1
         })
+
+        // ✅ Create Coupon for Discount (ensure the discount is valid)
+        const coupon = await stripe.coupons.create({
+            amount_off: Math.max(Math.round(minDiscount * 100, 1)), // Ensure discount is at least 1 cent
+            currency: currency,
+        });
 
         const session = await stripe.checkout.sessions.create({
             success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
             cancel_url: `${origin}/verify?success=false&orderId=${newOrder._id}`,
             line_items,
             mode: 'payment',
+            discounts: [{
+                coupon: coupon.id
+            }]
         })
         res.json({ success: true, session_url: session.url });
 

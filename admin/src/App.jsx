@@ -10,6 +10,7 @@ import Login from './components/Login'
 import { ToastContainer } from 'react-toastify';
 import Users from './pages/Users'
 import Dashboard from './pages/Dashboard'
+import AddCoupon from './pages/Coupon'
 export const backendUrl = import.meta.env.VITE_BACKEND_URL
 export const currency = '৳'
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path='/orders' element={<Orders token={token}></Orders>} />
                 <Route path='/users' element={<Users token={token}></Users>} />
                 <Route path='/dashboard' element={<Dashboard token={token}></Dashboard>} />
+                <Route path='/coupon' element={<AddCoupon token={token}></AddCoupon>} />
 
 
               </Routes>
