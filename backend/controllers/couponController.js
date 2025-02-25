@@ -18,17 +18,16 @@ const createCoupon = async (req, res) => {
       if (new Date(expiryDate) <= new Date(startDate)) {
           return res.status(400).json({ success: false, message: "Expiry date must be after the start date!" });
       }
-
-      const newCoupon = new Coupon({
-          code,
-          discountType,
-          discountValue,
-          minCartAmount,
-          startDate,
-          expiryDate,
-          oneTimeUse: oneTimeUse || false, // ✅ এক্সপ্লিসিট ভাবে ফিক্স করা
-          active: true
-      });
+      const newCoupon = new Coupon({ 
+        code, 
+        discountType, 
+        discountValue, 
+        minCartAmount, 
+        startDate, 
+        expiryDate, 
+        active: true, 
+        oneTimeUse: req.body.oneTimeUse || false  // ✅ Default false
+    });
 
       await newCoupon.save();
       res.status(201).json({ success: true, message: "Coupon added successfully!" });
