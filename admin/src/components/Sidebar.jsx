@@ -10,7 +10,7 @@ const Sidebar = () => {
 
                 <NavLink
                     className='flex items-center gap-3  border-r-0 px-3 py-2 rounded-l  transition duration-300'
-                    to='/dashboard'
+                    to='/'
                 >
                     <FaBox className='w-5 h-5' />
                     <p className='hidden md:block'>Dashboard</p>
