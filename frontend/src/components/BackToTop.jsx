@@ -28,8 +28,8 @@ const BackToTop = () => {
     }, [])
     return (
         <div>
-            <button className= {`fixed right-4 bottom-4 bg-[#C31C37] rounded-full cursor-pointer ${showButton ? "visible": "invisible"}`}>
-                <FaArrowUp onClick={scrollToTop} className='text-4xl py-2 px-2 text-white animate-bounce' />
+            <button className= {`fixed right-4 bottom-4 py-1 px-1 bg-[#C31C37] rounded-full cursor-pointer ${showButton ? "visible": "invisible"}`}>
+                <FaArrowUp onClick={scrollToTop} className='text-[40px] py-1 px-1  text-white animate-bounce' />
             </button>
         </div>
     )

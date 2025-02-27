@@ -5,7 +5,6 @@ import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { data } from 'react-router-dom';
 import CouponApply from '../components/CouponApply';
 const PlaceOrder = () => {
     const [method, setMethod] = useState('cod')

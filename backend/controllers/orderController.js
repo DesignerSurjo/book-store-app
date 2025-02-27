@@ -43,7 +43,7 @@ const placeOrderStripe = async (req, res) => {
 
         // Ensure the values are at least 1
         const minAmount = Math.max(amount, 1); // Ensure total amount is at least 1
-        const minDiscount = Math.max(discount, 0); // Ensure discount is non-negative
+        const minDiscount = discount > 0 ? Math.max(discount, 0) : 1; // Set discount to 1 if no discount
         const minDeliverCharge = Math.max(deliverCharge, 1); // Ensure delivery charge is at least 1
 
 
@@ -70,7 +70,8 @@ const placeOrderStripe = async (req, res) => {
                 unit_amount: Math.max(Math.round(item.price * 100, 1)) // Ensure price is at least 1 cent
             },
             quantity: item.quantity
-        }))
+        }));
+
         line_items.push({
             price_data: {
                 currency: currency,
@@ -80,30 +81,30 @@ const placeOrderStripe = async (req, res) => {
                 unit_amount: Math.max(minDeliverCharge * 100, 1) // Ensure delivery charge is at least 1 cent
             },
             quantity: 1
-        })
+        });
 
-        // ✅ Create Coupon for Discount (ensure the discount is valid)
-        const coupon = await stripe.coupons.create({
+        // If a discount exists, apply it
+        const coupon = discount > 0 ? await stripe.coupons.create({
             amount_off: Math.max(Math.round(minDiscount * 100, 1)), // Ensure discount is at least 1 cent
             currency: currency,
-        });
+        }) : null;
 
         const session = await stripe.checkout.sessions.create({
             success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
             cancel_url: `${origin}/verify?success=false&orderId=${newOrder._id}`,
             line_items,
             mode: 'payment',
-            discounts: [{
-                coupon: coupon.id
-            }]
-        })
+            discounts: coupon ? [{ coupon: coupon.id }] : [], // Apply coupon only if it's created
+        });
+        
         res.json({ success: true, session_url: session.url });
 
     } catch (error) {
         console.log(error);
-        res.json({ success: false, message: error.message })
+        res.json({ success: false, message: error.message });
     }
-}
+};
+
 
 
 const verifyStripe = async (req, res) => {

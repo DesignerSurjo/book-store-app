@@ -57,7 +57,14 @@ const Navbar = () => {
           onMouseLeave={() => !isMobile && setDropdownOpen(false)}
         >
           <img
-            onClick={() => isMobile && (token ? setDropdownOpen(!dropdownOpen) : navigate('/login'))}
+           onClick={() => {
+            if (!token) {
+              navigate('/login'); // মোবাইল ও ডেস্কটপ দুই জায়গাতেই কাজ করবে
+            } else if (isMobile) {
+              setDropdownOpen((prev) => !prev);
+            }
+          }}
+          
             className="w-5 cursor-pointer"
             src={assets.profile_icon}
             alt="Profile"
