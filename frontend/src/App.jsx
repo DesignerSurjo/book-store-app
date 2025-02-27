@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import Verify from './pages/Verify';
 import { ShopContext } from './context/ShopContext';
 import axios from 'axios';
+import BackToTop from './components/BackToTop';
 // 🚧 Maintenance Page
 const Maintenance = () => (
   <div className="flex flex-col items-center justify-center h-screen text-center">
@@ -65,6 +66,7 @@ function App() {
 
         </Routes>
       </div>
+      <BackToTop></BackToTop>
       <Fotter></Fotter>
     </div>
   )
