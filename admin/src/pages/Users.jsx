@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { backendUrl } from "../App";
 import { toast } from "react-toastify";
+import AddUser from "../components/Adduser";
 
 const UserTable = ({ token }) => {
     const [users, setUsers] = useState([]);
-    
+
     // Function to fetch users
     const fetchUsers = async () => {
         try {
@@ -46,7 +47,7 @@ const UserTable = ({ token }) => {
     const updateUserRole = async (userId, newRole) => {
         try {
             const response = await axios.put(
-                `${backendUrl}/api/user/users/${userId}`,
+                `${backendUrl}/api/user/users/${userId}/role`,
                 { role: newRole },
                 { headers: { token } }
             );
@@ -110,26 +111,27 @@ const UserTable = ({ token }) => {
             </div>
 
             {/* For Small Screens (Mobile Devices) */}
-            <div className="m-10 md:hidden">
+
+            <div className="m-4 md:hidden">
                 {users.map((item, index) => (
                     <div
                         key={index}
-                        className="bg-white p-3 mb-2 rounded-md shadow-sm border border-gray-200"
+                        className="bg-white p-4 space-y-3 rounded-lg shadow-md border border-gray-200"
                     >
-                        <div className="flex justify-between mb-2">
+                        <div className="flex justify-between">
                             <span className="font-semibold">Name:</span>
-                            <span>{item.name}</span>
+                            <span className="truncate">{item.name}</span>
                         </div>
-                        <div className="flex justify-between mb-2">
+                        <div className="flex justify-between">
                             <span className="font-semibold">Email:</span>
-                            <span>{item.email}</span>
+                            <span className="truncate">{item.email}</span>
                         </div>
-                        <div className="flex justify-between mb-2">
+                        <div className="flex justify-between">
                             <span className="font-semibold">Role:</span>
                             <select
                                 value={item.role}
                                 onChange={(e) => updateUserRole(item._id, e.target.value)}
-                                className="border border-gray-300 rounded-md p-1"
+                                className="border border-gray-300 rounded-md p-1 w-full"
                             >
                                 <option value="customer">Customer</option>
                                 <option value="admin">Admin</option>
@@ -138,14 +140,24 @@ const UserTable = ({ token }) => {
                         <div className="flex justify-end">
                             <span
                                 onClick={() => deleteUser(item._id)}
-                                className="text-lg text-red-500 cursor-pointer"
+                                className="text-lg text-red-500 cursor-pointer hover:text-red-700"
                             >
-                                ✖ Delete
+                                ✖ 
                             </span>
                         </div>
                     </div>
                 ))}
             </div>
+
+
+
+
+
+            {/*  add user */}
+
+<AddUser></AddUser>
+
+
         </>
     );
 };
