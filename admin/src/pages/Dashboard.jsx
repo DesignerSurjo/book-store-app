@@ -55,7 +55,7 @@ const Dashboard = ({ token }) => {
 
     const interval = setInterval(() => {
       fetchDashboardData();
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
